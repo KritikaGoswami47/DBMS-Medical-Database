@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LabTrack Pro – Doctor Lab Test Reports System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:ital,wght@0,300;0,600;0,700;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-icon">⬡</div>
+    <div>
+      <div class="brand-name">LabTrack<span>Pro</span></div>
+      <div class="brand-sub">Doctor Lab Reports DB</div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-section">OVERVIEW</div>
+    <a href="#" class="nav-item active" data-view="dashboard">
+      <span class="nav-icon">◈</span> Dashboard
+    </a>
+    <a href="#" class="nav-item" data-view="patients">
+      <span class="nav-icon">◉</span> Patients
+    </a>
+
+    <div class="nav-section">DIAGNOSTICS</div>
+    <a href="#" class="nav-item" data-view="reports">
+      <span class="nav-icon">◧</span> Lab Reports
+    </a>
+    <a href="#" class="nav-item" data-view="orders">
+      <span class="nav-icon">◫</span> Test Orders
+    </a>
+    <a href="#" class="nav-item" data-view="critical">
+      <span class="nav-icon">◬</span> Critical Alerts
+    </a>
+
+    <div class="nav-section">SYSTEM</div>
+    <a href="#" class="nav-item" data-view="schema">
+      <span class="nav-icon">◱</span> DB Schema
+    </a>
+    <a href="#" class="nav-item" data-view="queries">
+      <span class="nav-icon">◲</span> SQL Queries
+    </a>
+    <a href="#" class="nav-item" data-view="audit">
+      <span class="nav-icon">◳</span> Audit Trail
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="db-status">
+      <span class="status-dot"></span> PostgreSQL Connected
+    </div>
+    <div class="db-info">CIC-210 | MAIT Delhi</div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title" id="pageTitle">Dashboard</h1>
+      <div class="breadcrumb">Home / <span id="breadcrumbCurrent">Dashboard</span></div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-box">
+        <input type="text" placeholder="Search patient, report, test…" id="globalSearch">
+        <span class="search-icon">⌕</span>
+      </div>
+      <div class="user-badge">
+        <div class="user-avatar">DR</div>
+        <div>
+          <div class="user-name">Dr. Rajesh Kumar</div>
+          <div class="user-role">Pathologist</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================
+       VIEW: DASHBOARD
+  ================================ -->
+  <section class="view active" id="view-dashboard">
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Patients</div>
+        <div class="stat-value">10</div>
+        <div class="stat-sub">↑ 2 this week</div>
+      </div>
+      <div class="stat-card accent-yellow">
+        <div class="stat-label">Reports Today</div>
+        <div class="stat-value">13</div>
+        <div class="stat-sub">5 pending verification</div>
+      </div>
+      <div class="stat-card accent-red">
+        <div class="stat-label">Critical Alerts</div>
+        <div class="stat-value">2</div>
+        <div class="stat-sub">Immediate action required</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">Tests Completed</div>
+        <div class="stat-value">13</div>
+        <div class="stat-sub">100% turnaround</div>
+      </div>
+    </div>
+
+    <div class="grid-2col">
+      <!-- Recent Reports -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Recent Lab Reports</span>
+          <span class="badge">Last 7 days</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Report</th><th>Patient</th><th>Test</th><th>Status</th><th>Flag</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="mono">#009</span></td>
+              <td>Mohit Joshi</td>
+              <td>Troponin I</td>
+              <td><span class="badge-status completed">Verified</span></td>
+              <td><span class="flag critical">CRITICAL</span></td>
+            </tr>
+            <tr>
+              <td><span class="mono">#004</span></td>
+              <td>Rahul Verma</td>
+              <td>ECG 12-Lead</td>
+              <td><span class="badge-status completed">Verified</span></td>
+              <td><span class="flag critical">CRITICAL</span></td>
+            </tr>
+            <tr>
+              <td><span class="mono">#006</span></td>
+              <td>Sneha Gupta</td>
+              <td>HbA1c</td>
+              <td><span class="badge-status completed">Verified</span></td>
+              <td><span class="flag abnormal">ABNORMAL</span></td>
+            </tr>
+            <tr>
+              <td><span class="mono">#010</span></td>
+              <td>Ananya Kapoor</td>
+              <td>TSH</td>
+              <td><span class="badge-status completed">Verified</span></td>
+              <td><span class="flag abnormal">ABNORMAL</span></td>
+            </tr>
+            <tr>
+              <td><span class="mono">#003</span></td>
+              <td>Priya Mehta</td>
+              <td>Lipid Profile</td>
+              <td><span class="badge-status completed">Verified</span></td>
+              <td><span class="flag abnormal">ABNORMAL</span></td>
+            </tr>
+            <tr>
+              <td><span class="mono">#008</span></td>
+              <td>Lavanya Verma</td>
+              <td>CBC</td>
+              <td><span class="badge-status completed">Verified</span></td>
+              <td><span class="flag normal">NORMAL</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Test Distribution Chart -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Tests by Category</span>
+        </div>
+        <div class="chart-container" id="categoryChart">
+          <div class="bar-chart">
+            <div class="bar-row">
+              <span class="bar-label">Biochemistry</span>
+              <div class="bar-track"><div class="bar-fill" style="width:55%"><span>4</span></div></div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Hematology</span>
+              <div class="bar-track"><div class="bar-fill b2" style="width:41%"><span>3</span></div></div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Radiology</span>
+              <div class="bar-track"><div class="bar-fill b3" style="width:27%"><span>2</span></div></div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Other (ECG)</span>
+              <div class="bar-track"><div class="bar-fill b4" style="width:20%"><span>1</span></div></div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Immunology</span>
+              <div class="bar-track"><div class="bar-fill b5" style="width:13%"><span>1</span></div></div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Serology</span>
+              <div class="bar-track"><div class="bar-fill b6" style="width:13%"><span>1</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Critical Alert Banner -->
+    <div class="alert-banner">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-content">
+        <div class="alert-title">2 CRITICAL REPORTS REQUIRE IMMEDIATE ATTENTION</div>
+        <div class="alert-desc">Report #009 (Troponin I: 0.89 ng/mL) · Report #004 (AF on ECG) — Emergency contact notified</div>
+      </div>
+      <button class="btn-alert" onclick="showView('critical')">View Alerts →</button>
+    </div>
+
+  </section>
+
+  <!-- ============================
+       VIEW: PATIENTS
+  ================================ -->
+  <section class="view" id="view-patients">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Patient Registry</span>
+        <span class="badge">10 Active Patients</span>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>ID</th><th>Patient Name</th><th>DOB</th><th>Blood</th><th>Phone</th><th>Tests</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="mono">P001</span></td><td>Aarav Sharma</td><td>15 Apr 1990</td><td><span class="blood-badge">B+</span></td><td>9810012345</td><td>2</td><td><span class="badge-status completed">Active</span></td></tr>
+          <tr><td><span class="mono">P002</span></td><td>Priya Mehta</td><td>22 Nov 1985</td><td><span class="blood-badge">A+</span></td><td>9821023456</td><td>1</td><td><span class="badge-status completed">Active</span></td></tr>
+          <tr><td><span class="mono">P003</span></td><td>Rahul Verma</td><td>08 Jul 2000</td><td><span class="blood-badge">O+</span></td><td>9832034567</td><td>2</td><td><span class="badge-status critical-badge">Critical</span></td></tr>
+          <tr><td><span class="mono">P004</span></td><td>Sneha Gupta</td><td>30 Mar 1975</td><td><span class="blood-badge ab">AB+</span></td><td>9843045678</td><td>1</td><td><span class="badge-status completed">Active</span></td></tr>
+          <tr><td><span class="mono">P005</span></td><td>Vikram Singh</td><td>12 Sep 1968</td><td><span class="blood-badge neg">B−</span></td><td>9854056789</td><td>1</td><td><span class="badge-status completed">Active</span></td></tr>
+          <tr><td><span class="mono">P006</span></td><td>Ananya Kapoor</td><td>25 Jan 1995</td><td><span class="blood-badge neg">A−</span></td><td>9865067890</td><td>1</td><td><span class="badge-status completed">Active</span></td></tr>
+          <tr><td><span class="mono">P007</span></td><td>Mohit Joshi</td><td>17 Jun 1982</td><td><span class="blood-badge neg">O−</span></td><td>9876078901</td><td>1</td><td><span class="badge-status critical-badge">Critical</span></td></tr>
+          <tr><td><span class="mono">P008</span></td><td>Divya Agarwal</td><td>05 Dec 1998</td><td><span class="blood-badge">B+</span></td><td>9887089012</td><td>1</td><td><span class="badge-status completed">Active</span></td></tr>
+          <tr><td><span class="mono">P009</span></td><td>Arjun Patel</td><td>19 Aug 1955</td><td><span class="blood-badge">A+</span></td><td>9898090123</td><td>1</td><td><span class="badge-status completed">Active</span></td></tr>
+          <tr><td><span class="mono">P010</span></td><td>Ritu Choudhary</td><td>14 Feb 1992</td><td><span class="blood-badge ab neg">AB−</span></td><td>9909101234</td><td>2</td><td><span class="badge-status completed">Active</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================
+       VIEW: LAB REPORTS
+  ================================ -->
+  <section class="view" id="view-reports">
+    <div class="filter-bar">
+      <select class="filter-select" id="filterCategory">
+        <option value="">All Categories</option>
+        <option>Hematology</option>
+        <option>Biochemistry</option>
+        <option>Radiology</option>
+        <option>Immunology</option>
+        <option>Serology</option>
+        <option>Other</option>
+      </select>
+      <select class="filter-select" id="filterStatus">
+        <option value="">All Status</option>
+        <option>Normal</option>
+        <option>Abnormal</option>
+        <option>Critical</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">All Lab Reports</span>
+        <span class="badge">13 Reports</span>
+      </div>
+      <table class="data-table" id="reportsTable">
+        <thead>
+          <tr><th>ID</th><th>Patient</th><th>Test</th><th>Category</th><th>Date</th><th>Result</th><th>Abnormal</th><th>Critical</th><th>Released</th></tr>
+        </thead>
+        <tbody>
+          <tr data-cat="Hematology" data-flag="abnormal"><td><span class="mono">#001</span></td><td>Aarav Sharma</td><td>CBC</td><td>Hematology</td><td>10 Jan 2026</td><td class="result-text">WBC elevated 13.2</td><td><span class="flag abnormal">YES</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+          <tr data-cat="Serology" data-flag="abnormal"><td><span class="mono">#002</span></td><td>Aarav Sharma</td><td>Widal Test</td><td>Serology</td><td>11 Jan 2026</td><td class="result-text">Typhoid positive</td><td><span class="flag abnormal">YES</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+          <tr data-cat="Biochemistry" data-flag="abnormal"><td><span class="mono">#003</span></td><td>Priya Mehta</td><td>Lipid Profile</td><td>Biochemistry</td><td>10 Jan 2026</td><td class="result-text">Cholesterol 235 mg/dL</td><td><span class="flag abnormal">YES</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+          <tr data-cat="Other" data-flag="critical"><td><span class="mono">#004</span></td><td>Rahul Verma</td><td>ECG 12-Lead</td><td>Other</td><td>11 Jan 2026</td><td class="result-text">AF pattern identified</td><td><span class="flag critical">YES</span></td><td><span class="flag critical">YES</span></td><td>✓</td></tr>
+          <tr data-cat="Biochemistry" data-flag="normal"><td><span class="mono">#005</span></td><td>Rahul Verma</td><td>Lipid Profile</td><td>Biochemistry</td><td>11 Jan 2026</td><td class="result-text">Normal lipid profile</td><td><span class="flag normal">NO</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+          <tr data-cat="Biochemistry" data-flag="abnormal"><td><span class="mono">#006</span></td><td>Sneha Gupta</td><td>HbA1c</td><td>Biochemistry</td><td>12 Jan 2026</td><td class="result-text">HbA1c 8.2%</td><td><span class="flag abnormal">YES</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+          <tr data-cat="Radiology" data-flag="normal"><td><span class="mono">#007</span></td><td>Vikram Singh</td><td>MRI Brain</td><td>Radiology</td><td>14 Jan 2026</td><td class="result-text">No acute lesion</td><td><span class="flag normal">NO</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+          <tr data-cat="Hematology" data-flag="normal"><td><span class="mono">#008</span></td><td>Ananya Kapoor</td><td>CBC</td><td>Hematology</td><td>14 Jan 2026</td><td class="result-text">All normal</td><td><span class="flag normal">NO</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+          <tr data-cat="Immunology" data-flag="critical"><td><span class="mono">#009</span></td><td>Mohit Joshi</td><td>Troponin I</td><td>Immunology</td><td>15 Jan 2026</td><td class="result-text">0.89 ng/mL ⚠</td><td><span class="flag critical">YES</span></td><td><span class="flag critical">YES</span></td><td>✓</td></tr>
+          <tr data-cat="Biochemistry" data-flag="abnormal"><td><span class="mono">#010</span></td><td>Ananya Kapoor</td><td>TSH</td><td>Biochemistry</td><td>16 Jan 2026</td><td class="result-text">TSH 6.8 mIU/L</td><td><span class="flag abnormal">YES</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+          <tr data-cat="Radiology" data-flag="abnormal"><td><span class="mono">#011</span></td><td>Arjun Patel</td><td>MRI Brain</td><td>Radiology</td><td>18 Jan 2026</td><td class="result-text">Cortical atrophy</td><td><span class="flag abnormal">YES</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+          <tr data-cat="Biochemistry" data-flag="abnormal"><td><span class="mono">#012</span></td><td>Ritu Choudhary</td><td>TSH</td><td>Biochemistry</td><td>18 Jan 2026</td><td class="result-text">TSH 7.2, T3 low</td><td><span class="flag abnormal">YES</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+          <tr data-cat="Hematology" data-flag="abnormal"><td><span class="mono">#013</span></td><td>Ritu Choudhary</td><td>CBC</td><td>Hematology</td><td>18 Jan 2026</td><td class="result-text">Hb 9.2 g/dL</td><td><span class="flag abnormal">YES</span></td><td><span class="flag normal">NO</span></td><td>✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================
+       VIEW: TEST ORDERS
+  ================================ -->
+  <section class="view" id="view-orders">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Test Orders</span>
+        <span class="badge">13 Total</span>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Order ID</th><th>Patient</th><th>Doctor</th><th>Test</th><th>Lab</th><th>Priority</th><th>Status</th><th>Ordered On</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="mono">ORD-001</span></td><td>Aarav Sharma</td><td>Dr. Sanjay Gupta</td><td>CBC</td><td>Central Diagnostics</td><td><span class="priority normal-p">Normal</span></td><td><span class="badge-status completed">Completed</span></td><td>10 Jan 2026</td></tr>
+          <tr><td><span class="mono">ORD-002</span></td><td>Aarav Sharma</td><td>Dr. Sanjay Gupta</td><td>Widal Test</td><td>Central Diagnostics</td><td><span class="priority normal-p">Normal</span></td><td><span class="badge-status completed">Completed</span></td><td>10 Jan 2026</td></tr>
+          <tr><td><span class="mono">ORD-003</span></td><td>Priya Mehta</td><td>Dr. Sanjay Gupta</td><td>Lipid Profile</td><td>Central Diagnostics</td><td><span class="priority normal-p">Normal</span></td><td><span class="badge-status completed">Completed</span></td><td>10 Jan 2026</td></tr>
+          <tr><td><span class="mono">ORD-004</span></td><td>Rahul Verma</td><td>Dr. Anil Kapoor</td><td>ECG 12-Lead</td><td>Cardio Diagnostics</td><td><span class="priority urgent-p">Urgent</span></td><td><span class="badge-status completed">Completed</span></td><td>11 Jan 2026</td></tr>
+          <tr><td><span class="mono">ORD-009</span></td><td>Mohit Joshi</td><td>Dr. Anil Kapoor</td><td>Troponin I</td><td>Cardio Diagnostics</td><td><span class="priority stat-p">STAT</span></td><td><span class="badge-status completed">Completed</span></td><td>15 Jan 2026</td></tr>
+          <tr><td><span class="mono">ORD-007</span></td><td>Vikram Singh</td><td>Dr. Meena Iyer</td><td>MRI Brain</td><td>MRI &amp; Imaging</td><td><span class="priority normal-p">Normal</span></td><td><span class="badge-status completed">Completed</span></td><td>13 Jan 2026</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================
+       VIEW: CRITICAL ALERTS
+  ================================ -->
+  <section class="view" id="view-critical">
+    <div class="critical-hero">
+      <div class="critical-hero-icon">⚠</div>
+      <div>
+        <div class="critical-hero-title">Active Critical Alerts</div>
+        <div class="critical-hero-sub">2 reports require immediate clinical intervention</div>
+      </div>
+    </div>
+
+    <div class="critical-cards">
+      <div class="critical-card">
+        <div class="critical-card-top">
+          <span class="critical-label">🔴 CRITICAL — CARDIAC EVENT</span>
+          <span class="mono">#009</span>
+        </div>
+        <div class="critical-patient">Mohit Joshi, 43M</div>
+        <div class="critical-test">Troponin I — Immunology</div>
+        <div class="critical-value">0.89 ng/mL <span class="vs-normal">(Normal: &lt; 0.04)</span></div>
+        <div class="critical-result">Possible Myocardial Infarction. Immediate intervention required. Emergency contact: 9876078900</div>
+        <div class="critical-footer">
+          <span>Ordered by: Dr. Anil Kapoor (Cardiology)</span>
+          <span>15 Jan 2026 11:10</span>
+        </div>
+      </div>
+
+      <div class="critical-card">
+        <div class="critical-card-top">
+          <span class="critical-label">🔴 CRITICAL — ARRHYTHMIA</span>
+          <span class="mono">#004</span>
+        </div>
+        <div class="critical-patient">Rahul Verma, 25M</div>
+        <div class="critical-test">ECG 12-Lead — Cardiac</div>
+        <div class="critical-value">Atrial Fibrillation Pattern <span class="vs-normal">(Expected: Normal sinus rhythm)</span></div>
+        <div class="critical-result">Irregular rhythm confirmed. Refer to senior cardiologist immediately. Emergency contact: 9832034560</div>
+        <div class="critical-footer">
+          <span>Ordered by: Dr. Anil Kapoor (Cardiology)</span>
+          <span>11 Jan 2026 11:00 — URGENT</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:2rem">
+      <div class="card-header"><span class="card-title">All Abnormal Reports</span></div>
+      <table class="data-table">
+        <thead><tr><th>Report</th><th>Patient</th><th>Test</th><th>Key Finding</th><th>Flag</th></tr></thead>
+        <tbody>
+          <tr><td><span class="mono">#001</span></td><td>Aarav Sharma</td><td>CBC</td><td>WBC 13.2, Neutrophilia 78%</td><td><span class="flag abnormal">H</span></td></tr>
+          <tr><td><span class="mono">#002</span></td><td>Aarav Sharma</td><td>Widal Test</td><td>O 1:160 positive</td><td><span class="flag abnormal">POS</span></td></tr>
+          <tr><td><span class="mono">#003</span></td><td>Priya Mehta</td><td>Lipid Profile</td><td>Cholesterol 235, LDL 155</td><td><span class="flag abnormal">H</span></td></tr>
+          <tr><td><span class="mono">#004</span></td><td>Rahul Verma</td><td>ECG</td><td>Atrial Fibrillation</td><td><span class="flag critical">HH</span></td></tr>
+          <tr><td><span class="mono">#006</span></td><td>Sneha Gupta</td><td>HbA1c</td><td>8.2% (target &lt;7%)</td><td><span class="flag abnormal">HH</span></td></tr>
+          <tr><td><span class="mono">#009</span></td><td>Mohit Joshi</td><td>Troponin I</td><td>0.89 ng/mL</td><td><span class="flag critical">HH</span></td></tr>
+          <tr><td><span class="mono">#010</span></td><td>Ananya Kapoor</td><td>TSH</td><td>6.8 mIU/L (High)</td><td><span class="flag abnormal">H</span></td></tr>
+          <tr><td><span class="mono">#013</span></td><td>Ritu Choudhary</td><td>CBC</td><td>Hb 9.2, MCV 71 (Iron deficiency)</td><td><span class="flag abnormal">L</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================
+       VIEW: DB SCHEMA
+  ================================ -->
+  <section class="view" id="view-schema">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Entity-Relationship Overview</span>
+        <span class="badge">9 Tables · 3NF Normalized</span>
+      </div>
+      <div class="schema-diagram">
+        <div class="er-table">
+          <div class="er-table-name">patient</div>
+          <div class="er-pk">🔑 patient_id</div>
+          <div class="er-col">first_name, last_name</div>
+          <div class="er-col">date_of_birth, gender</div>
+          <div class="er-col">phone (UNIQUE), email</div>
+          <div class="er-col">blood_group, address</div>
+        </div>
+        <div class="er-table">
+          <div class="er-table-name">doctor</div>
+          <div class="er-pk">🔑 doctor_id</div>
+          <div class="er-fk">🔗 dept_id → department</div>
+          <div class="er-col">first_name, last_name</div>
+          <div class="er-col">specialization</div>
+          <div class="er-col">license_number (UNIQUE)</div>
+        </div>
+        <div class="er-table">
+          <div class="er-table-name">lab_test</div>
+          <div class="er-pk">🔑 test_id</div>
+          <div class="er-col">test_name (UNIQUE)</div>
+          <div class="er-col">test_code, category</div>
+          <div class="er-col">sample_type, price</div>
+          <div class="er-col">normal_range, unit</div>
+        </div>
+        <div class="er-table highlight-table">
+          <div class="er-table-name">test_order</div>
+          <div class="er-pk">🔑 order_id</div>
+          <div class="er-fk">🔗 patient_id → patient</div>
+          <div class="er-fk">🔗 doctor_id → doctor</div>
+          <div class="er-fk">🔗 lab_id → lab</div>
+          <div class="er-fk">🔗 test_id → lab_test</div>
+          <div class="er-col">priority, status</div>
+        </div>
+        <div class="er-table highlight-table">
+          <div class="er-table-name">lab_report</div>
+          <div class="er-pk">🔑 report_id</div>
+          <div class="er-fk">🔗 order_id → test_order</div>
+          <div class="er-fk">🔗 tech_id → lab_technician</div>
+          <div class="er-fk">🔗 verified_by → doctor</div>
+          <div class="er-col">result_summary</div>
+          <div class="er-col">is_abnormal, is_critical</div>
+          <div class="er-col">is_verified, is_released</div>
+        </div>
+        <div class="er-table">
+          <div class="er-table-name">report_parameter</div>
+          <div class="er-pk">🔑 param_id</div>
+          <div class="er-fk">🔗 report_id → lab_report</div>
+          <div class="er-col">parameter_name</div>
+          <div class="er-col">observed_value, unit</div>
+          <div class="er-col">normal_range, flag</div>
+        </div>
+        <div class="er-table">
+          <div class="er-table-name">access_log</div>
+          <div class="er-pk">🔑 log_id</div>
+          <div class="er-fk">🔗 report_id → lab_report</div>
+          <div class="er-col">accessed_by_role</div>
+          <div class="er-col">access_type</div>
+          <div class="er-col">accessed_at, ip_address</div>
+        </div>
+        <div class="er-table">
+          <div class="er-table-name">audit_log</div>
+          <div class="er-pk">🔑 audit_id</div>
+          <div class="er-col">table_name, record_id</div>
+          <div class="er-col">action (INSERT/UPDATE/DELETE)</div>
+          <div class="er-col">old_values, new_values (JSONB)</div>
+          <div class="er-col">changed_by, changed_at</div>
+        </div>
+        <div class="er-table">
+          <div class="er-table-name">lab</div>
+          <div class="er-pk">🔑 lab_id</div>
+          <div class="er-col">lab_name, location</div>
+          <div class="er-col">accreditation</div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1.5rem">
+      <div class="card-header"><span class="card-title">Normalization Notes</span></div>
+      <div class="norm-notes">
+        <div class="norm-item"><span class="norm-badge">1NF</span> All attributes are atomic (no multi-valued fields). Blood group stored as single enum value. Parameters stored in separate report_parameter table.</div>
+        <div class="norm-item"><span class="norm-badge">2NF</span> All non-key attributes depend on the full primary key. No partial dependencies (each FK is a full table reference, not composite key partial dependency).</div>
+        <div class="norm-item"><span class="norm-badge">3NF</span> No transitive dependencies. Doctor name not stored in test_order (only doctor_id FK). Test price stored only in lab_test, not duplicated in test_order.</div>
+        <div class="norm-item"><span class="norm-badge">BCNF</span> Every determinant is a candidate key. license_number → doctor_id (unique constraint), phone → patient_id (unique constraint). Both are candidate keys.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+       VIEW: SQL QUERIES
+  ================================ -->
+  <section class="view" id="view-queries">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Key SQL Queries with Explanations</span>
+      </div>
+      <div class="query-list">
+
+        <div class="query-block">
+          <div class="query-title">Q1 · Critical Reports with Patient Emergency Contact</div>
+          <div class="query-purpose">Purpose: Identify patients needing emergency notification</div>
+          <pre class="sql-code">SELECT
+    lr.report_id,
+    CONCAT(p.first_name, ' ', p.last_name) AS patient_name,
+    p.emergency_contact,
+    lt.test_name,
+    lr.result_summary,
+    lr.report_date
+FROM lab_report lr
+JOIN test_order to_ ON lr.order_id    = to_.order_id
+JOIN patient p      ON to_.patient_id = p.patient_id
+JOIN lab_test lt    ON to_.test_id    = lt.test_id
+WHERE lr.is_critical = TRUE
+ORDER BY lr.report_date DESC;</pre>
+          <div class="query-result">→ Returns 2 rows: Troponin I (Mohit Joshi), ECG AF (Rahul Verma)</div>
+        </div>
+
+        <div class="query-block">
+          <div class="query-title">Q2 · Tests by Category with Abnormality Rate (GROUP BY + HAVING)</div>
+          <div class="query-purpose">Purpose: Workload planning and quality monitoring</div>
+          <pre class="sql-code">SELECT
+    lt.category,
+    COUNT(lr.report_id)                              AS total_reports,
+    SUM(CASE WHEN lr.is_abnormal THEN 1 ELSE 0 END) AS abnormal_reports,
+    ROUND(AVG(lt.price), 2)                          AS avg_test_price
+FROM lab_report lr
+JOIN test_order to_ ON lr.order_id = to_.order_id
+JOIN lab_test lt    ON to_.test_id = lt.test_id
+GROUP BY lt.category
+ORDER BY total_reports DESC;</pre>
+          <div class="query-result">→ Biochemistry: 4 reports | Hematology: 3 reports | Radiology: 2 reports</div>
+        </div>
+
+        <div class="query-block">
+          <div class="query-title">Q3 · Patients with Critical Reports (JOIN vs Subquery comparison)</div>
+          <div class="query-purpose">Purpose: Demonstrate two approaches to the same requirement</div>
+          <pre class="sql-code">-- JOIN approach (better performance on large datasets):
+SELECT DISTINCT p.first_name, p.last_name, p.emergency_contact
+FROM patient p
+JOIN test_order to_ ON p.patient_id = to_.patient_id
+JOIN lab_report lr  ON to_.order_id = lr.order_id
+WHERE lr.is_critical = TRUE;
+
+-- Subquery approach (more readable for analysts):
+SELECT CONCAT(first_name,' ',last_name), emergency_contact
+FROM patient
+WHERE patient_id IN (
+    SELECT to_.patient_id FROM test_order to_
+    JOIN lab_report lr ON to_.order_id = lr.order_id
+    WHERE lr.is_critical = TRUE
+);</pre>
+          <div class="query-result">→ JOIN preferred: query planner can use index on test_order.patient_id; subquery forces sequential scan</div>
+        </div>
+
+        <div class="query-block">
+          <div class="query-title">Q4 · Relational Algebra → SQL Translation</div>
+          <div class="query-purpose">σ(is_critical=TRUE)(lab_report) ⋈ test_order ⋈ patient</div>
+          <pre class="sql-code">-- σ = WHERE filter
+-- ⋈ = JOIN
+-- π = SELECT projection
+
+SELECT p.patient_id, p.first_name, p.last_name,
+       lr.report_id, lr.result_summary
+FROM lab_report lr
+JOIN test_order to_ ON lr.order_id    = to_.order_id
+JOIN patient p      ON to_.patient_id = p.patient_id
+WHERE lr.is_critical = TRUE;</pre>
+          <div class="query-result">→ Demonstrates direct mapping from RA operators to SQL clauses</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+       VIEW: AUDIT TRAIL
+  ================================ -->
+  <section class="view" id="view-audit">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Access Audit Log</span>
+        <span class="badge">Privacy Critical</span>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Log ID</th><th>Report</th><th>Role</th><th>Action</th><th>Timestamp</th><th>IP Address</th></tr></thead>
+        <tbody>
+          <tr><td><span class="mono">L001</span></td><td>#001</td><td><span class="role doctor">Doctor</span></td><td>View</td><td>10 Jan 2026 17:00</td><td>192.168.1.10</td></tr>
+          <tr><td><span class="mono">L002</span></td><td>#001</td><td><span class="role tech">Technician</span></td><td>Edit</td><td>10 Jan 2026 15:30</td><td>192.168.1.20</td></tr>
+          <tr><td><span class="mono">L003</span></td><td>#001</td><td><span class="role patient">Patient</span></td><td>View</td><td>10 Jan 2026 18:00</td><td>103.24.55.12</td></tr>
+          <tr><td><span class="mono">L004</span></td><td>#004</td><td><span class="role doctor">Doctor</span></td><td>View</td><td>11 Jan 2026 12:00</td><td>192.168.1.10</td></tr>
+          <tr><td><span class="mono">L005</span></td><td>#004</td><td><span class="role doctor">Doctor</span></td><td>Download</td><td>11 Jan 2026 12:05</td><td>192.168.1.10</td></tr>
+          <tr><td><span class="mono">L006</span></td><td>#009</td><td><span class="role doctor">Doctor</span></td><td>View</td><td>15 Jan 2026 12:10</td><td>192.168.1.10</td></tr>
+          <tr><td><span class="mono">L007</span></td><td>#009</td><td><span class="role admin">Admin</span></td><td>View</td><td>15 Jan 2026 12:30</td><td>192.168.1.1</td></tr>
+          <tr><td><span class="mono">L008</span></td><td>#002</td><td><span class="role patient">Patient</span></td><td>View</td><td>12 Jan 2026 09:00</td><td>103.24.55.12</td></tr>
+          <tr><td><span class="mono">L009</span></td><td>#006</td><td><span class="role doctor">Doctor</span></td><td>View</td><td>13 Jan 2026 10:00</td><td>192.168.1.10</td></tr>
+          <tr><td><span class="mono">L010</span></td><td>#006</td><td><span class="role patient">Patient</span></td><td>View</td><td>14 Jan 2026 11:00</td><td>110.33.22.45</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card" style="margin-top:1.5rem">
+      <div class="card-header"><span class="card-title">Why Access Logging Matters</span></div>
+      <div class="norm-notes">
+        <div class="norm-item"><span class="norm-badge">PRIVACY</span> Every access to a lab report — view, download, print, edit — is logged with role, timestamp, and IP. No report can be accessed without a trace.</div>
+        <div class="norm-item"><span class="norm-badge">COMPLIANCE</span> Access logs are immutable (no UPDATE/DELETE allowed on access_log table). This mirrors HIPAA-style audit requirements in medical systems.</div>
+        <div class="norm-item"><span class="norm-badge">TRIGGER</span> The audit_log table captures before/after values for every UPDATE on lab_report (via trigger). This enables forensic comparison if data is tampered with.</div>
+        <div class="norm-item"><span class="norm-badge">POLICY</span> Unreleased reports (is_released=FALSE) are invisible to patients at the view layer. The trigger prevents release before doctor verification.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/app.js"></script>
+</body>
+</html>
